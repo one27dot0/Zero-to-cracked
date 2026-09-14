@@ -35,32 +35,32 @@ const fs = require("fs");
 
 // Exercise 1.1 -
 
-// console.log("The start of operation");
+console.log("The start of operation");
 
-// setTimeout(() => {
-//   console.log("What is your Opinion?");
-// }, 0);
+setTimeout(() => {
+  console.log("What is your Opinion?");
+}, 0);
 
-// fs.readFile("./file1.txt", "utf-8", (err, data) => {
-//   console.log(`Answer the question ${data}`);
+fs.readFile("./file1.txt", "utf-8", (err, data) => {
+  console.log(`Answer the question ${data}`);
 
-//   process.nextTick(() => {
-//     console.log(`Sorry everyone, I can't see you all because I dey above una`);
-//   });
+  process.nextTick(() => {
+    console.log(`Sorry everyone, I can't see you all because I dey above una`);
+  });
 
-//   Promise.resolve().then(() => {
-//     console.log("Third in command here");
-//   });
-// });
+  Promise.resolve().then(() => {
+    console.log("Third in command here");
+  });
+});
 
-// setImmediate(() => {
-//   const name = "Muhammad Oniye";
-//   console.log(name);
-// });
+setImmediate(() => {
+  const name = "Muhammad Oniye";
+  console.log(name);
+});
 
-// console.log(
-//   "This is the end of the event loop tutorial and end of day 1, but somehow this comes second",
-// );
+console.log(
+  "This is the end of the event loop tutorial and end of day 1, but somehow this comes second",
+);
 
 // Tutorial Hell chackpoint - Event Loop Starvation
 
