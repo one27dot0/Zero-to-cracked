@@ -1,0 +1,85 @@
+"Use strict";
+
+import { request } from "http";
+
+const express = require("express");
+const app = express();
+
+app.use(express.json);
+
+app.use(requestMiddleware);
+app.use(requestLogger);
+
+// Request ID Middleware
+/* What it is: In production, when 1,000 requests hit your server simultaneously, log files become a jumbled mess. A Request ID (correlation ID) tags every request with a unique UUID at the very door, attaches it to req, and sends it back in the response headers (X-Request-Id). */
+
+const crypto = require("crypto");
+
+function requestMiddleware(req, res, next) {
+  const requestId = req.headers["x-request-id"] || crypto.randomUUID();
+  req.id = requestId;
+
+  res.setHeader("x-Request-Id", requestId);
+  next();
+}
+
+// Latency logger middleware
+/* What it is: You need to know how long a route takes to execute. You record the time when the request enters, listen for when the response finishes sending, and calculate the elapsed time. */
+function requestLogger(req, res, next) {
+  const startTime = Date.now();
+
+  res.on("finish", () => {
+    const durationMs = Date.now() - startTime;
+    const logData = {
+      requestId: req.id,
+      method: req.method,
+      url: req.originalUrl,
+      statusCode: res.statusCode,
+      latency: `${durationMs}ms`,
+    };
+    console.log(JSON.stringify(logData));
+  });
+
+  next();
+}
+
+// Routes
+app.get("users/:id", (req, res) => {
+  if (req.params.id != "1") {
+    return next(new AppError("User does Exist"));
+  }
+  res.json({ id: 1, name: "Muhammad Oniye" });
+});
+
+app.all("*", (req, res, next) => {
+  next(new AppError(`Cannot find ${req.originalUrl} on this server!`, 404));
+});
+
+// custom AppError Class
+
+class AppError extends Error {
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode = statusCode;
+    this.isOperational = true;
+
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+// 4-Argument Global error handler
+function globalErrorHandler(err, req, res, next) {
+  const statusCode = err.statusCode;
+  const message = err.message || "Internal Server Error";
+
+  res.status(statusCode).json({
+    status: statusCode >= 500 ? "error" : "Fail",
+    message: message,
+  });
+}
+
+app.use(globalErrorHandler);
+
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
+});
