@@ -1,12 +1,19 @@
-"use strict"
+"use strict";
 const fs = require("fs");
 const express = require("express");
 
 const app = express();
+const routerFile = require("./routes/router");
+const memoryArray = require("./data");
+const { error } = require("console");
 
-app.get("/health", (req, res) => {
-    console.log("The route now returns something");
-    res.send("Are we Live? Seems so");
+app.use("/", routerFile);
+
+app.use((req, res) => {
+  res.status(404).json({
+    error: "Not Found",
+    message: `Cannot process this request because You dey MaDDD!`,
+  });
 });
 
-aap.listen(3000);
+app.listen(3000);
