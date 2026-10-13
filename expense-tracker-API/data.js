@@ -2,11 +2,19 @@ const express = require("express");
 const app = express();
 
 // In memory Array
-const arrayMemory = [
-  { id: 1, name: "Muhammad Oniye", age: 21 },
-  { id: 2, name: "Abubakar Tafawa Balewa", age: 51 },
-  { id: 3, name: "Bola Ahmed Tinubu", age: 91 },
-  { id: 4, name: "Abubakar Bukola Saraki", age: 68 },
-];
+// const arrayMemory = [
+//   { sn: 1, fullName: "John Dee", amount: 54.21, category: "Groceries" },
+//   { sn: 2, fullName: "Emma ray", amount: 32.43, category: "Clothing" },
+//   { sn: 3, fullName: "Debayor osai", amount: 98, category: "Plants" },
+//   { sn: 4, fullName: "Agberoko loba", amount: 234, category: "Farm Feeds" },
+//   {
+//     sn: 5,
+//     fullName: "Aminu Umaru",
+//     amount: 61,
+//     category: "Electrical Appliances",
+//   },
+// ];
 
-module.exports = arrayMemory;
+const expenses = [];
+
+module.exports = expenses;

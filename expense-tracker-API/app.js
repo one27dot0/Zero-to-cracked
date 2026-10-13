@@ -1,12 +1,10 @@
 "use strict";
-const fs = require("fs");
 const express = require("express");
 
 const app = express();
 const routerFile = require("./routes/router");
-const memoryArray = require("./data");
-const { error } = require("console");
 
+app.use(express.json());
 app.use("/", routerFile);
 
 app.use((req, res) => {
@@ -16,4 +14,4 @@ app.use((req, res) => {
   });
 });
 
-app.listen(3000);
+app.listen(3500);
