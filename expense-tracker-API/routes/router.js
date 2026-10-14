@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const router = express.Router();
 const expenses = require("../data");
 const validateExpenseInput = require("../hand-valid");
+const { error } = require("console");
 
 router.get("/health", (req, res) => {
   console.log("The route now returns something");
@@ -62,8 +63,15 @@ router
   .put((req, res) => {
     const findID = expenses.find((ID) => ID.id === req.params.id);
 
-    const { fullName, amount, category } = req.body;
+    if (!findID) {
+      return res.status(404).json({
+        error: "Not Found",
+        message: ""
+      })
+    }
 
+    const { fullName, amount, category } = req.body;
+    validateExpenseInput(req.body);
     if (findID) {
       findID.fullName = fullName;
       findID.amount = amount;
@@ -81,7 +89,7 @@ router
 
     const deleteItem = expenses.splice(index, 1);
 
-    res.status(200).json({
+    res.status(204).json({
       message: `Expenses corresponding to ID ${req.params.id} has been Successfully removed`,
       deleteItem,
     });
